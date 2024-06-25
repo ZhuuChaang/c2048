@@ -1,10 +1,13 @@
+#ifndef _MATRIX_H_
+#define _MATRIX_H_ 
+
 #include<iostream>
 #include<string>
 #include<vector>
 using namespace std;
 
+
 class Matrix{
-    vector<vector<int>> MatData;
     int size;
 
     public:
@@ -19,3 +22,5 @@ class Matrix{
 
 
 };
+
+#endif
