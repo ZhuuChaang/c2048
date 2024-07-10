@@ -3,7 +3,7 @@
 
 #define UP    0
 #define DOWN  1
-#define left  2
-#define right 3
+#define LEFT  2
+#define RIGHT 3
 
 #endif
