@@ -4,6 +4,8 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<stdlib.h>
+#include<time.h>
 #include "def.h"
 using namespace std;
 
@@ -29,7 +31,10 @@ class Matrix{
         bool pushMatrix(int direction);
         bool loadStack (int direction, int index);
         void throwStack(int direction, int index);
+        bool Pushforward(vector<int>& stack,int& top);
+        vector<int> getRandomPosition(vector<int> freeSpace, int direction);
         
+
         void print(){
             cout<<"-----------"<<endl;
             for(int i=0;i<size;i++){
@@ -42,6 +47,6 @@ class Matrix{
         }
 };
 
-bool Pushforward(vector<int>& stack,int& top);
+
 
 #endif

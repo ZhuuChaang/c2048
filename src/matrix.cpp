@@ -2,12 +2,17 @@
 
 bool Matrix::pushMatrix(int direction){
     bool changed=false;
-    int top=0;
+    vector<int> freeSpace(size,0);
 
     for(int i=0;i<size;i++){
         loadStack(direction,i);
-        changed|=Pushforward(stack,top);
+        changed|=Pushforward(stack,freeSpace[i]);
         throwStack(direction,i);
+    }
+
+    if(changed){
+        vector<int> pos=getRandomPosition(freeSpace,direction);
+        this->M[pos[0]][pos[1]]=pos[2];
     }
 
     return changed;
@@ -78,7 +83,7 @@ void Matrix::throwStack(int direction, int index){
     }
 }
 
-bool Pushforward(vector<int>& stack,int& top){
+bool Matrix::Pushforward(vector<int>& stack,int& top){
     int gndValue=0;
     int gndIndex=-1;
     int size=stack.size();
@@ -113,27 +118,92 @@ bool Pushforward(vector<int>& stack,int& top){
 
 }
 
+vector<int> Matrix::getRandomPosition(vector<int> freeSpace, int direction){
+    int freeCnt=0;
+    int numBorn=0;
+    int valBorn=0;
+    vector<int> ret(3,0);
 
-//test
-int main(){
-    vector<vector<int>> test={
-                                {0,0,0,0},
-                                {2,2,0,0},
-                                {4,2,0,0},
-                                {4,2,0,2},
-                                {2,0,2,4},
-                                {2,2,4,4}
-                             };
-
-    bool ret=false;
-    int top=-1;
-    for(int i=0;i<test.size();i++){
-        ret=Pushforward(test[i],top);
-        for(int j=0;j<test[i].size();j++){
-            cout<<test[i][j]<<" ";
-        }
-        cout<<"top:"<<top<<" ret:"<<ret;
-        cout<<endl;
+    for(int i=0;i<size;i++){
+        freeSpace[i]=size-freeSpace[i]-1;
+        freeCnt+=freeSpace[i];
     }
 
+    srand(time(0));
+    numBorn=rand()%freeCnt+1;
+    valBorn=(rand()%10<=7)?2:4;
+
+    for(int i=0;i<size;i++){
+        if(numBorn<=freeSpace[i]){
+            switch (direction){
+            case LEFT:
+                ret[0]=i;
+                ret[1]=size-numBorn;
+                break;
+
+            case RIGHT:
+                ret[0]=i;
+                ret[1]=numBorn-1;
+                break;
+            
+            case UP:
+                ret[0]=size-numBorn;
+                ret[1]=i;
+                break;
+            
+            case DOWN:
+                ret[0]=numBorn-1;
+                ret[1]=i;
+            
+            default:
+                break;
+            }
+            break;
+        }else{
+            numBorn-=freeSpace[i];
+        }
+    }
+
+    ret[2]=valBorn;
+    return ret;
 }
+
+// test
+int main(){
+    Matrix t({
+        {2,2,2,2},
+        {2,0,2,0},
+        {2,2,4,4},
+        {8,0,2,0}
+    });
+
+    // vector<vector<int>> test={
+    //                             {0,0,0,0},
+    //                             {2,2,0,0},
+    //                             {4,2,0,0},
+    //                             {4,2,0,2},
+    //                             {2,0,2,4},
+    //                             {2,2,4,4}
+    //                          };
+
+    // bool ret=false;
+    // int top=-1;
+    // for(int i=0;i<test.size();i++){
+    //     ret=t.Pushforward(test[i],top);
+    //     for(int j=0;j<test[i].size();j++){
+    //         cout<<test[i][j]<<" ";
+    //     }
+    //     cout<<"top:"<<top<<" ret:"<<ret;
+    //     cout<<endl;
+    // }
+
+
+    t.pushMatrix(DOWN);
+    t.print();
+
+}
+
+        // {0,0,0,0},
+        // {2,0,4,0},
+        // {4,0,4,2},
+        // {8,4,2,4}
