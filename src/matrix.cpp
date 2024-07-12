@@ -168,14 +168,26 @@ vector<int> Matrix::getRandomPosition(vector<int> freeSpace, int direction){
     return ret;
 }
 
+void Matrix::reSet(){
+    for(int i=0;i<size;i++){
+        for(int j=0;j<size;j++){
+            M[i][j]=0;
+        }
+    }
+    srand(time(0));
+    int row=rand()%4;
+    int col=rand()%4;
+    M[row][col]=2;
+}
+
 // test
-int main(){
-    Matrix t({
-        {2,2,2,2},
-        {2,0,2,0},
-        {2,2,4,4},
-        {8,0,2,0}
-    });
+// int main(){
+//     Matrix t({
+//         {2,2,2,2},
+//         {2,0,2,0},
+//         {2,2,4,4},
+//         {8,0,2,0}
+//     });
 
     // vector<vector<int>> test={
     //                             {0,0,0,0},
@@ -197,11 +209,20 @@ int main(){
     //     cout<<endl;
     // }
 
+//     t.print();
+//     t.pushMatrix(LEFT);
+//     t.print();
 
-    t.pushMatrix(DOWN);
-    t.print();
+//     t.pushMatrix(RIGHT);
+//     t.print();    
 
-}
+//     t.pushMatrix(DOWN);
+//     t.print();
+
+//     t.pushMatrix(UP);
+//     t.print();
+
+// }
 
         // {0,0,0,0},
         // {2,0,4,0},
